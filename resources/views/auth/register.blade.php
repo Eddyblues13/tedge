@@ -519,15 +519,25 @@
                         <label class="form-label">Country</label>
                         <select name="country" class="register-form-select" required>
                             @php
-                            $countries = ["Afghanistan", "Albania", "Algeria", "Argentina", "Australia", "Austria",
-                            "Bangladesh", "Belgium", "Brazil", "Canada", "Chile", "China", "Colombia", "Czech Republic",
-                            "Denmark", "Egypt", "Finland", "France", "Germany", "Ghana", "Greece", "Hungary", "India",
-                            "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Japan", "Jordan", "Kenya",
-                            "Kuwait", "Malaysia", "Mexico", "Morocco", "Netherlands", "New Zealand", "Nigeria",
-                            "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania",
-                            "Russia", "Saudi Arabia", "Singapore", "South Africa", "South Korea", "Spain", "Sweden",
-                            "Switzerland", "Taiwan", "Thailand", "Turkey", "Ukraine", "United Arab Emirates", "United
-                            Kingdom", "United States", "Venezuela", "Vietnam", "Zimbabwe"];
+                            $countries = [
+                            "Afghanistan", "Albania", "Algeria", "Anguilla", "Antigua and Barbuda", "Argentina",
+                            "Aruba", "Australia", "Austria", "Bahamas", "Bangladesh", "Barbados", "Belgium",
+                            "Belize", "Bermuda", "Bonaire, Sint Eustatius and Saba", "Brazil",
+                            "British Virgin Islands", "Canada", "Cayman Islands", "Chile", "China", "Colombia",
+                            "Cuba", "Curaçao", "Czech Republic", "Denmark", "Dominica", "Dominican Republic",
+                            "Egypt", "Finland", "France", "Germany", "Ghana", "Greece", "Grenada", "Guadeloupe",
+                            "Guyana", "Haiti", "Hungary", "India", "Indonesia", "Iran", "Iraq", "Ireland",
+                            "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kenya", "Kuwait", "Malaysia",
+                            "Martinique", "Mexico", "Montserrat", "Morocco", "Netherlands", "New Zealand",
+                            "Nigeria", "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal",
+                            "Puerto Rico", "Qatar", "Romania", "Russia", "Saint Barthélemy",
+                            "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin",
+                            "Saint Vincent and the Grenadines", "Saudi Arabia", "Singapore", "Sint Maarten",
+                            "South Africa", "South Korea", "Spain", "Suriname", "Sweden", "Switzerland", "Taiwan",
+                            "Thailand", "Trinidad and Tobago", "Turkey", "Turks and Caicos Islands",
+                            "U.S. Virgin Islands", "Ukraine", "United Arab Emirates", "United Kingdom",
+                            "United States", "Venezuela", "Vietnam", "Zimbabwe"
+                            ];
                             $selectedCountry = old('country', 'United States');
                             @endphp
                             @foreach($countries as $country)
