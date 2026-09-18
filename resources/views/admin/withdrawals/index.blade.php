@@ -105,7 +105,7 @@
                         <i class="bi bi-search position-absolute"
                             style="left:14px;top:50%;transform:translateY(-50%);color:var(--text-color);opacity:.5;"></i>
                         <input type="text" id="wdSearch" class="admin-form-control"
-                            placeholder="Search by user name, wallet, amount…" style="padding-left:40px;">
+                            placeholder="Search by user name, wallet, bank, amount…" style="padding-left:40px;">
                     </div>
                 </div>
             </div>
@@ -122,8 +122,8 @@
                                 <th>User</th>
                                 <th>Amount</th>
                                 <th>Account Type</th>
-                                <th>Crypto</th>
-                                <th>Wallet Address</th>
+                                <th>Method</th>
+                                <th>Destination</th>
                                 <th>Status</th>
                                 <th>Date</th>
                                 <th style="width:160px;">Actions</th>
@@ -182,11 +182,41 @@
                                     </span>
                                 </td>
                                 <td>
+                                    @if($withdrawal->isBank())
+                                    <span class="wd-crypto-badge">
+                                        <i class="bi bi-bank me-1"></i>BANK
+                                    </span>
+                                    @else
                                     <span class="wd-crypto-badge">
                                         {{ strtoupper($withdrawal->crypto_currency ?? '—') }}
                                     </span>
+                                    @endif
                                 </td>
                                 <td>
+                                    @if($withdrawal->isBank())
+                                    <div class="wd-bank-details">
+                                        <div style="color:var(--heading-color);font-weight:600;">
+                                            {{ $withdrawal->bank_name }}
+                                        </div>
+                                        <div>{{ $withdrawal->account_name }}</div>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <span class="wd-wallet-text">{{ $withdrawal->account_number }}</span>
+                                            <button class="btn btn-sm wd-copy-btn p-0 ms-1"
+                                                data-clipboard-text="{{ $withdrawal->account_number }}"
+                                                title="Copy account number">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                        @if($withdrawal->routing_number)
+                                        <div>Routing: <span class="wd-wallet-text">{{ $withdrawal->routing_number
+                                                }}</span></div>
+                                        @endif
+                                        @if($withdrawal->swift_code)
+                                        <div>SWIFT: <span class="wd-wallet-text">{{ $withdrawal->swift_code }}</span>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    @else
                                     <div class="d-flex align-items-center gap-1">
                                         <span class="wd-wallet-text text-truncate"
                                             title="{{ $withdrawal->wallet_address }}">
@@ -198,6 +228,7 @@
                                             <i class="bi bi-clipboard"></i>
                                         </button>
                                     </div>
+                                    @endif
                                 </td>
                                 <td>
                                     @php
@@ -351,6 +382,13 @@
         font-family: 'Courier New', monospace;
     }
 
+    .wd-bank-details {
+        font-size: 12px;
+        color: var(--text-color);
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+
     .wd-copy-btn {
         color: var(--accent-color);
         font-size: 13px;
@@ -409,7 +447,7 @@
     // ── Clipboard ────────────────────────────────────
     const clipboard = new ClipboardJS('.wd-copy-btn');
     clipboard.on('success', function() {
-        toastr.success('Wallet address copied!');
+        toastr.success('Copied to clipboard!');
     });
 
     // ── DataTable ────────────────────────────────────

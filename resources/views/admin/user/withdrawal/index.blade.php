@@ -59,10 +59,19 @@
                                 </td>
                                 <td>{{ ucfirst($withdrawal->account_type) }}</td>
                                 <td>
-                                    @if($withdrawal->account_type == 'crypto')
-                                    {{ $withdrawal->wallet_address }}
-                                    @else
+                                    @if($withdrawal->isBank())
                                     Bank Transfer
+                                    @if($withdrawal->bank_name)
+                                    <div style="font-size:12px;opacity:.8;">
+                                        {{ $withdrawal->bank_name }} &middot; {{ $withdrawal->account_name }}<br>
+                                        {{ $withdrawal->account_number }}
+                                        @if($withdrawal->routing_number)<br>Routing: {{ $withdrawal->routing_number
+                                        }}@endif
+                                        @if($withdrawal->swift_code)<br>SWIFT: {{ $withdrawal->swift_code }}@endif
+                                    </div>
+                                    @endif
+                                    @else
+                                    {{ $withdrawal->wallet_address }}
                                     @endif
                                 </td>
                                 <td>

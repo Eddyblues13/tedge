@@ -188,6 +188,7 @@ Route::prefix('user')->middleware('user')->group(function () {
         ->name('copy.trader');
     Route::get('/withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'index'])->name('withdrawal');
     Route::get('/crypto-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'cryptoWithdrawal'])->name('crypto.withdrawal');
+    Route::get('/bank-withdrawal', [App\Http\Controllers\User\WithdrawalController::class, 'bankWithdrawal'])->name('bank.withdrawal');
     Route::post('/submit', [App\Http\Controllers\User\WithdrawalController::class, 'submit'])->name('withdraw.submit');
     Route::get('/deposit', [App\Http\Controllers\User\DepositController::class, 'index'])->name('deposit.page');
     Route::get('/buy-crypto', [App\Http\Controllers\User\DepositController::class, 'buyCrypto'])->name('buy.crypto.page');

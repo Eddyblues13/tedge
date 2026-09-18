@@ -48,6 +48,7 @@ class ManageUserWithdrawalController extends Controller
                 'user_id' => $userId,
                 'amount' => $request->amount,
                 'account_type' => $request->account_type,
+                'method' => $request->account_type,
                 'crypto_currency' => $request->crypto_currency,
                 'wallet_address' => $request->wallet_address,
                 'status' => $request->status
@@ -94,7 +95,7 @@ class ManageUserWithdrawalController extends Controller
         }
 
         try {
-            $withdrawal->update($request->all());
+            $withdrawal->update($request->all() + ['method' => $request->account_type]);
 
             return response()->json([
                 'status' => 'success',

@@ -5,19 +5,16 @@
 
 <!-- Main Content -->
 <div class="depost-form-main">
-    <h6 class="heading text-secondary fs-6">CRYPTO WITHDRAWAL</h6>
+    <h6 class="heading text-secondary fs-6">BANK WITHDRAWAL</h6>
     <div class="withdraw-card">
         <form id="withdrawalForm">
             @csrf
             <!-- Add CSRF Token -->
-            <input type="hidden" name="method" value="crypto">
+            <input type="hidden" name="method" value="bank">
 
             <div class="input-group">
                 <div class="input-label">Account</div>
                 <select class="select-account" name="account">
-                    {{-- <option value="trading">Trading Balance ({{ config('currencies.' . Auth::user()->currency, '$')
-                        }}{{
-                        number_format($tradingBalance, 2) }})</option> --}}
                     <option value="holding">Holding Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{
                         number_format($holdingBalance, 2) }})</option>
                     <option value="staking">Staking Balance ({{ config('currencies.' . Auth::user()->currency, '$') }}{{
@@ -35,22 +32,35 @@
             </div>
 
             <div class="input-group">
-                <div class="input-label">Crypto Currency</div>
-                <select class="select-account" name="crypto_currency">
-                    <option value="btc">Bitcoin BTC</option>
-                    <option value="usdt">Tether USDT</option>
-                    <option value="eth">Ethereum ETH</option>
-                </select>
-            </div>
-
-            <div class="input-group">
                 <div class="input-label">Amount ({{Auth::user()->currency}})</div>
-                <input type="number" class="amount-input" name="amount" value="0">
+                <input type="number" class="amount-input" name="amount" value="0" step="0.01" min="0.01" required>
             </div>
 
             <div class="input-group">
-                <div class="input-label">Wallet Address</div>
-                <input type="text" class="amount-input" name="wallet_address">
+                <div class="input-label">Bank Name</div>
+                <input type="text" class="amount-input" name="bank_name" maxlength="255" required>
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">Account Holder Name</div>
+                <input type="text" class="amount-input" name="account_name" maxlength="255"
+                    value="{{ trim((Auth::user()->first_name ?? '') . ' ' . (Auth::user()->last_name ?? '')) }}"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">Account Number / IBAN</div>
+                <input type="text" class="amount-input" name="account_number" maxlength="50" required>
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">Routing Number / Sort Code (optional)</div>
+                <input type="text" class="amount-input" name="routing_number" maxlength="50">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">SWIFT / BIC Code (optional)</div>
+                <input type="text" class="amount-input" name="swift_code" maxlength="20">
             </div>
             <button type="submit" class="withdrawal-btn">Submit</button>
         </form>
@@ -69,8 +79,11 @@
         $('#withdrawalForm').on('submit', function (e) {
             e.preventDefault();
 
+            const submitBtn = $(this).find('[type="submit"]');
+            submitBtn.prop('disabled', true);
+
             $.ajax({
-                url: '{{ route("withdraw.submit") }}', // Replace with your route
+                url: '{{ route("withdraw.submit") }}',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -78,8 +91,11 @@
                     $('#withdrawalForm')[0].reset(); // Reset the form
                 },
                 error: function (xhr) {
-                    let errorMessage = xhr.responseJSON.message || 'An error occurred.';
+                    let errorMessage = (xhr.responseJSON && xhr.responseJSON.message) || 'An error occurred.';
                     toastr.error(errorMessage); // Show error message
+                },
+                complete: function () {
+                    submitBtn.prop('disabled', false);
                 }
             });
         });
