@@ -9,22 +9,26 @@
         const activeTab = document.getElementById('active-tab');
         const statusMessage = document.getElementById('status-message');
 
-        closedTab.addEventListener('click', function() {
-            closedTab.classList.add('active');
-            activeTab.classList.remove('active');
-            statusMessage.textContent = 'NO CLOSED TRADES';
-        });
+        // Trade tabs only exist on some pages
+        if (closedTab && activeTab && statusMessage) {
+            closedTab.addEventListener('click', function() {
+                closedTab.classList.add('active');
+                activeTab.classList.remove('active');
+                statusMessage.textContent = 'NO CLOSED TRADES';
+            });
 
-        activeTab.addEventListener('click', function() {
-            activeTab.classList.add('active');
-            closedTab.classList.remove('active');
-            statusMessage.textContent = 'NO OPEN TRADES';
-        });
+            activeTab.addEventListener('click', function() {
+                activeTab.classList.add('active');
+                closedTab.classList.remove('active');
+                statusMessage.textContent = 'NO OPEN TRADES';
+            });
+        }
 
             // Handle sidebar visibility and dropdowns
     document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
 
+    if (sidebar) {
     // Open all dropdowns when the sidebar is shown
     sidebar.addEventListener('shown.bs.offcanvas', () => {
         document.querySelectorAll('.dropdown-content').forEach(content => {
@@ -46,6 +50,7 @@
             }
         });
     });
+    }
 
     // Dropdown button functionality
     document.querySelectorAll('.dropdown-btn').forEach(button => {
